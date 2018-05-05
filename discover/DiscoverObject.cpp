@@ -68,6 +68,7 @@
 class OurSortFilterProxyModel : public QSortFilterProxyModel, public QQmlParserStatus
 {
     Q_OBJECT
+    Q_INTERFACES(QQmlParserStatus)
 public:
     void classBegin() override {}
     void componentComplete() override {
@@ -126,6 +127,12 @@ DiscoverObject::DiscoverObject(CompactMode mode)
 
     connect(m_engine, &QQmlApplicationEngine::objectCreated, this, &DiscoverObject::integrateObject);
     m_engine->load(QUrl(QStringLiteral("qrc:/qml/DiscoverWindow.qml")));
+
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, [this](){
+        const auto objs = m_engine->rootObjects();
+        for(auto o: objs)
+            delete o;
+    });
 }
 
 DiscoverObject::~DiscoverObject()

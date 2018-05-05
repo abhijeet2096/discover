@@ -57,6 +57,7 @@
 #include <QNetworkAccessManager>
 
 #include <glib.h>
+#include "FlatpakSourcesBackend.h"
 
 DISCOVER_BACKEND_PLUGIN(FlatpakBackend)
 
@@ -1074,7 +1075,7 @@ int FlatpakBackend::updatesCount() const
 bool FlatpakBackend::flatpakResourceLessThan(AbstractResource* l, AbstractResource* r)
 {
     return (l->isInstalled() != r->isInstalled()) ? l->isInstalled()
-         : (l->origin() != r->origin()) ? l->origin() < r->origin()
+         : (l->origin() != r->origin()) ? m_sources->originIndex(l->origin()) < m_sources->originIndex(r->origin())
          : l < r;
 }
 
@@ -1128,6 +1129,8 @@ ResultsStream * FlatpakBackend::findResourceByPackageName(const QUrl &url)
                 if (QString::compare(res->appstreamId(), url.host(), Qt::CaseInsensitive)==0)
                     resources << res;
             }
+            auto f = [this](AbstractResource* l, AbstractResource* r) { return flatpakResourceLessThan(l,r); };
+            std::sort(resources.begin(), resources.end(), f);
         }
     }
     return new ResultsStream(QStringLiteral("FlatpakStream"), resources);

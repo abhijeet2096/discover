@@ -36,7 +36,12 @@ public:
     QList<QAction*> actions() const override;
     bool supportsAdding() const override { return true; }
 
+    bool canMoveSources() const override { return true; }
+    bool moveSource(const QString & sourceId, int delta) override;
+
 private:
+    QStandardItem* sourceForId(const QString& id) const;
+
     QStandardItemModel* m_sources;
     QAction* m_testAction;
 };
