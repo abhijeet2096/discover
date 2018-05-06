@@ -6,7 +6,8 @@ cmake_minimum_required(VERSION 2.8.12)
 
 find_package(ECM REQUIRED NO_MODULE)
 
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_SOURCE_DIR}/cmake" )
+list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
 
 find_package(Qt5 5.7.0 REQUIRED CONFIG COMPONENTS Widgets Test Network Xml Concurrent DBus Quick)
 include(KDEInstallDirs)
@@ -30,6 +31,8 @@ find_package(KF5NewStuff 5.23 CONFIG)
 set(CMAKE_AUTORCC ON)
 
 pkg_check_modules(FLATPAK  flatpak>=0.6.12)
+
+find_package(Fwupd 1.06 CONFIG)
 
 if(NOT CMAKE_VERSION VERSION_LESS "3.10.0")
   # CMake 3.9+ warns about automoc on files without Q_OBJECT, and doesn't know about other macros.
@@ -77,5 +80,9 @@ set_package_properties(FLATPAK PROPERTIES
     URL "http://www.freedesktop.org"
     PURPOSE "Required to build the Flatpak backend"
     TYPE OPTIONAL)
-
+set_package_properties(FWUPD PROPERTIES
+    DESCRIPTION "Library that exposes fwupd"
+    URL "http://www.fwupd.org"
+    PURPOSE "Required to build the Fwupd backend"
+    TYPE OPTIONAL)
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

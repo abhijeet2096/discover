@@ -18,11 +18,13 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef DUMMYBACKEND_H
-#define DUMMYBACKEND_H
+#ifndef FWUPDBACKEND_H
+#define FWUPDBACKEND_H
 
 #include <resources/AbstractResourcesBackend.h>
 #include <QVariantList>
+
+#include <fwupd.h>
 
 class QAction;
 class FwupdReviewsBackend;
@@ -65,4 +67,4 @@ private:
     int m_startElements;
 };
 
-#endif // DUMMYBACKEND_H
+#endif // FWUPDBACKEND_H

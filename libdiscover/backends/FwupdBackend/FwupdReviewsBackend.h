@@ -18,8 +18,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef DUMMYREVIEWSBACKEND_H
-#define DUMMYREVIEWSBACKEND_H
+#ifndef FWUPDREVIEWSBACKEND_H
+#define FWUPDREVIEWSBACKEND_H
 
 #include <ReviewsBackend/AbstractReviewsBackend.h>
 #include <ReviewsBackend/ReviewsModel.h>
@@ -56,4 +56,4 @@ private:
     QHash<AbstractResource*, Rating*> m_ratings;
 };
 
-#endif // DUMMYREVIEWSBACKEND_H
+#endif // FWUPDREVIEWSBACKEND_H

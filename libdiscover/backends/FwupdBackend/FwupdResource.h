@@ -18,8 +18,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef DUMMYRESOURCE_H
-#define DUMMYRESOURCE_H
+#ifndef FWUPDRESOURCE_H
+#define FWUPDRESOURCE_H
 
 #include <resources/AbstractResource.h>
 
@@ -73,4 +73,4 @@ public:
     int m_size;
 };
 
-#endif // DUMMYRESOURCE_H
+#endif // FWUPDRESOURCE_H

@@ -18,8 +18,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef DUMMYTRANSACTION_H
-#define DUMMYTRANSACTION_H
+#ifndef FWUPDTRANSACTION_H
+#define FWUPDTRANSACTION_H
 
 #include <Transaction/Transaction.h>
 
@@ -43,4 +43,4 @@ class FwupdTransaction : public Transaction
         FwupdResource* m_app;
 };
 
-#endif // DUMMYTRANSACTION_H
+#endif // FWUPDTRANSACTION_H

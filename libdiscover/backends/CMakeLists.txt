@@ -21,7 +21,6 @@ if(BUILD_DummyBackend)
     add_subdirectory(DummyBackend)
 endif()
 
-add_subdirectory(FwupdBackend)
 
 option(BUILD_FlatpakBackend "Build Flatpak support" "ON")
 if(FLATPAK_FOUND AND AppStreamQt_FOUND AND BUILD_FlatpakBackend)
@@ -31,6 +30,7 @@ elseif(BUILD_FlatpakBackend)
 endif()
 
 find_package(Snapd)
+
 set_package_properties(Snapd PROPERTIES
     DESCRIPTION "Library that exposes Snapd"
     URL "http://www.snapcraft.io"
@@ -40,4 +40,9 @@ set_package_properties(Snapd PROPERTIES
 option(BUILD_SnapBackend "Build Snap support." "ON")
 if(BUILD_SnapBackend AND Snapd_FOUND)
     add_subdirectory(SnapBackend)
+endif()
+
+option(BUILD_FwupdBackend "Build Fwupd support." "ON")
+if(BUILD_FwupdBackend AND Fwupd_FOUND)
+    add_subdirectory(FwupdBackend)
 endif()

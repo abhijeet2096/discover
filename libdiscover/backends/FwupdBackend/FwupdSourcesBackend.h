@@ -18,8 +18,8 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>. *
  ***************************************************************************/
 
-#ifndef DUMMYSOURCESBACKEND_H
-#define DUMMYSOURCESBACKEND_H
+#ifndef FWUPDSOURCESBACKEND_H
+#define FWUPDSOURCESBACKEND_H
 
 #include <resources/AbstractSourcesBackend.h>
 #include <QStandardItemModel>
@@ -41,4 +41,4 @@ private:
     QAction* m_testAction;
 };
 
-#endif // DUMMYSOURCESBACKEND_H
+#endif // FWUPDSOURCESBACKEND_H
