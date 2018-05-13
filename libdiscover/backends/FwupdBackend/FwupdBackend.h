@@ -25,6 +25,18 @@
 #include <QVariantList>
 
 #include <fwupd.h>
+#include <fcntl.h>
+#include <gio/gio.h>
+#include <gio/gunixfdlist.h>
+#include <glib/gi18n.h>
+#include <glib/gstdio.h>
+
+#include <libsoup/soup-request-http.h>
+#include <libsoup/soup-requester.h>
+#include <libsoup/soup.h>
+
+#define PACKAGE_NAME "plasma-discover"
+#define PACKAGE_VERSION "5.12.80"
 
 class QAction;
 class FwupdReviewsBackend;
@@ -36,6 +48,7 @@ Q_OBJECT
 Q_PROPERTY(int startElements MEMBER m_startElements)
 public:
     explicit FwupdBackend(QObject* parent = nullptr);
+    ~FwupdBackend();
 
     int updatesCount() const override;
     AbstractBackendUpdater* backendUpdater() const override;
@@ -65,6 +78,14 @@ private:
     FwupdReviewsBackend* m_reviews;
     bool m_fetching;
     int m_startElements;
+
+    FwupdClient *client;
+    GPtrArray	*to_download;
+    GPtrArray	*to_ignore;
+
+    g_autofree gchar *user_agent = NULL;
+    g_autoptr(SoupSession) soup_session = NULL;
+
 };
 
 #endif // FWUPDBACKEND_H

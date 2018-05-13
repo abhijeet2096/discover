@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.12)
 find_package(ECM REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_SOURCE_DIR}/cmake" )
-list(APPEND CMAKE_FIND_ROOT_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
+
 
 find_package(Qt5 5.7.0 REQUIRED CONFIG COMPONENTS Widgets Test Network Xml Concurrent DBus Quick)
 include(KDEInstallDirs)
@@ -32,7 +32,8 @@ set(CMAKE_AUTORCC ON)
 
 pkg_check_modules(FLATPAK  flatpak>=0.6.12)
 
-find_package(Fwupd 1.06 CONFIG)
+find_package(FWUPD 1.06)
+
 
 if(NOT CMAKE_VERSION VERSION_LESS "3.10.0")
   # CMake 3.9+ warns about automoc on files without Q_OBJECT, and doesn't know about other macros.

@@ -50,11 +50,32 @@ FwupdBackend::FwupdBackend(QObject* parent)
     connect(m_reviews, &FwupdReviewsBackend::ratingsReady, this, &AbstractResourcesBackend::emitRatingsReady);
     connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &FwupdBackend::updatesCountChanged);
 
+
+
+    client = fwupd_client_new ();
+    to_download = g_ptr_array_new_with_free_func (g_free);
+    to_ignore = g_ptr_array_new_with_free_func (g_free);
+
+    /* use a custom user agent to provide the fwupd version */
+    user_agent = fwupd_build_user_agent (PACKAGE_NAME, PACKAGE_VERSION);
+    soup_session = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, user_agent,
+                                  SOUP_SESSION_TIMEOUT, 10,
+                                  NULL);
+    soup_session_remove_feature_by_type (soup_session,
+                             SOUP_TYPE_CONTENT_DECODER);
+
     populate(QStringLiteral("Fwupd"));
     if (!m_fetching)
         m_reviews->initialize();
 
     SourcesModel::global()->addSourcesBackend(new FwupdSourcesBackend(this));
+}
+
+FwupdBackend::~FwupdBackend()
+{
+    g_object_unref (client);
+    g_ptr_array_unref (to_download);
+    g_ptr_array_unref (to_ignore);
 }
 
 void FwupdBackend::populate(const QString& n)
