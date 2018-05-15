@@ -43,6 +43,6 @@ if(BUILD_SnapBackend AND Snapd_FOUND)
 endif()
 
 option(BUILD_FwupdBackend "Build Fwupd support." "ON")
-if(BUILD_FwupdBackend AND FWUPD_FOUND)
+if(BUILD_FwupdBackend AND LIBFWUPD_FOUND)
     add_subdirectory(FwupdBackend)
 endif()

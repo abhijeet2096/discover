@@ -24,10 +24,12 @@
 #include <resources/AbstractResourcesBackend.h>
 #include <QVariantList>
 
+extern "C" {
 #include <fwupd.h>
+}
 #include <fcntl.h>
 #include <gio/gio.h>
-#include <gio/gunixfdlist.h>
+#include <gio-unix-2.0/gio/gunixfdlist.h>
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 
@@ -35,8 +37,7 @@
 #include <libsoup/soup-requester.h>
 #include <libsoup/soup.h>
 
-#define PACKAGE_NAME "plasma-discover"
-#define PACKAGE_VERSION "5.12.80"
+
 
 class QAction;
 class FwupdReviewsBackend;
@@ -82,7 +83,6 @@ private:
     FwupdClient *client;
     GPtrArray	*to_download;
     GPtrArray	*to_ignore;
-
     g_autofree gchar *user_agent = NULL;
     g_autoptr(SoupSession) soup_session = NULL;
 

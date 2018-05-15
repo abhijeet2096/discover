@@ -32,7 +32,7 @@ set(CMAKE_AUTORCC ON)
 
 pkg_check_modules(FLATPAK  flatpak>=0.6.12)
 
-find_package(FWUPD 1.06)
+find_package(LIBFWUPD 1.0.7 REQUIRED)
 
 
 if(NOT CMAKE_VERSION VERSION_LESS "3.10.0")
@@ -81,7 +81,7 @@ set_package_properties(FLATPAK PROPERTIES
     URL "http://www.freedesktop.org"
     PURPOSE "Required to build the Flatpak backend"
     TYPE OPTIONAL)
-set_package_properties(FWUPD PROPERTIES
+set_package_properties(LIBFWUPD PROPERTIES
     DESCRIPTION "Library that exposes fwupd"
     URL "http://www.fwupd.org"
     PURPOSE "Required to build the Fwupd backend"

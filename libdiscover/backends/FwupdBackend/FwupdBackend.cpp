@@ -39,6 +39,15 @@
 
 DISCOVER_BACKEND_PLUGIN(FwupdBackend)
 
+
+    gchar  PROJECT_NAME[] = "abhijeet";
+    gchar  PROJECT_VERSION[] = "5.12.4";
+    
+/*gchar *fwupd_build_user_agent (const gchar *package_name,const gchar	*package_version){
+    gchar * k = "hey";
+    return k;
+}*/
+
 FwupdBackend::FwupdBackend(QObject* parent)
     : AbstractResourcesBackend(parent)
     , m_updater(new StandardBackendUpdater(this))
@@ -51,13 +60,12 @@ FwupdBackend::FwupdBackend(QObject* parent)
     connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &FwupdBackend::updatesCountChanged);
 
 
-
     client = fwupd_client_new ();
     to_download = g_ptr_array_new_with_free_func (g_free);
     to_ignore = g_ptr_array_new_with_free_func (g_free);
 
     /* use a custom user agent to provide the fwupd version */
-    user_agent = fwupd_build_user_agent (PACKAGE_NAME, PACKAGE_VERSION);
+    user_agent = fwupd_build_user_agent (PROJECT_NAME, PROJECT_VERSION);
     soup_session = soup_session_new_with_options (SOUP_SESSION_USER_AGENT, user_agent,
                                   SOUP_SESSION_TIMEOUT, 10,
                                   NULL);
