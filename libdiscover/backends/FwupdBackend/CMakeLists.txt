@@ -1,5 +1,5 @@
 add_subdirectory(tests)
-#add_definitions( -DPROJECT_NAME=${PROJECT_NAME} -DPROJECT_VERSION=${PROJECT_VERSION})
+add_definitions( -DPROJECT_NAME=${PROJECT_NAME} -DPROJECT_VERSION=${PROJECT_VERSION})
 
 set(fwupd-backend_SRCS
     FwupdResource.cpp
