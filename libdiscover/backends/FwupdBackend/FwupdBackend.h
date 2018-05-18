@@ -33,6 +33,7 @@ extern "C" {
 #include <glib/gi18n.h>
 #include <glib/gstdio.h>
 
+
 #include <libsoup/soup-request-http.h>
 #include <libsoup/soup-requester.h>
 #include <libsoup/soup.h>
@@ -67,6 +68,10 @@ public:
     void checkForUpdates() override;
     QString displayName() const override;
     bool hasApplications() const override;
+    FwupdClient *client;
+    GPtrArray *to_download;
+    GPtrArray *to_ignore;
+
 
 public Q_SLOTS:
     void toggleFetching();
@@ -80,9 +85,7 @@ private:
     bool m_fetching;
     int m_startElements;
 
-    FwupdClient *client;
-    GPtrArray	*to_download;
-    GPtrArray	*to_ignore;
+    
     g_autofree gchar *user_agent = NULL;
     g_autoptr(SoupSession) soup_session = NULL;
 

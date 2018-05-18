@@ -19,16 +19,38 @@
  ***************************************************************************/
 
 #include "FwupdSourcesBackend.h"
+#include "FwupdBackend.h"
+
 #include <QDebug>
 #include <QAction>
+#include <QString>
+
+
 
 FwupdSourcesBackend::FwupdSourcesBackend(AbstractResourcesBackend * parent)
     : AbstractSourcesBackend(parent)
     , m_sources(new QStandardItemModel(this))
     , m_testAction(new QAction(QIcon::fromTheme(QStringLiteral("kalgebra")), QStringLiteral("FwupdAction"), this))
 {
-    for (int i = 0; i<10; ++i)
-        addSource(QStringLiteral("FwupdSource%1").arg(i));
+    FwupdBackend* backend = qobject_cast<FwupdBackend*>(parent);
+    g_autoptr(GPtrArray) remotes = NULL;
+    g_autoptr(GCancellable) cancellable = g_cancellable_new();
+    g_autoptr(GError) error = NULL;
+    /* find all remotes */
+    remotes = fwupd_client_get_remotes (backend->client,cancellable,&error);
+    
+    for (guint i = 0; i < remotes->len; i++) {
+        FwupdRemote *remote = (FwupdRemote *)g_ptr_array_index (remotes, i);
+        g_autofree gchar *id = NULL;
+        /* ignore these, they're built in */
+        if (fwupd_remote_get_kind (remote) == FWUPD_REMOTE_KIND_LOCAL)
+            continue;
+        /* create something that we can use to enable/disable */
+        id = g_strdup_printf ("org.fwupd.%s.remote", fwupd_remote_get_id (remote));
+        addSource(QLatin1String(id));
+    }
+    //for (int i = 0; i<10; ++i)
+      //s  addSource(QStringLiteral("FwupdSource%1").arg(i));
 
     connect(m_testAction, &QAction::triggered, [](){ qDebug() << "action triggered!"; });
     connect(m_sources, &QStandardItemModel::itemChanged, this, [](QStandardItem* item) { qDebug() << "FwupdSource changed" << item << item->checkState(); });
@@ -43,6 +65,7 @@ bool FwupdSourcesBackend::addSource(const QString& id)
 {
     if (id.isEmpty())
         return false;
+    
 
     QStandardItem* it = new QStandardItem(id);
     it->setData(QVariant(id + QLatin1Char(' ') + id), Qt::ToolTipRole);

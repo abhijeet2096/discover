@@ -23,6 +23,7 @@
 
 #include <Transaction/Transaction.h>
 
+
 class FwupdResource;
 class FwupdTransaction : public Transaction
 {

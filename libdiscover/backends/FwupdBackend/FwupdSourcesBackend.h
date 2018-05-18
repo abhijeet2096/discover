@@ -24,6 +24,7 @@
 #include <resources/AbstractSourcesBackend.h>
 #include <QStandardItemModel>
 
+
 class FwupdSourcesBackend : public AbstractSourcesBackend
 {
 public:
