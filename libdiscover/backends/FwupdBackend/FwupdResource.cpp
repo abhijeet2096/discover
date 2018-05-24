@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "FwupdResource.h"
+#include "FwupdBackend.h"
+
 #include <Transaction/AddonList.h>
 #include <krandom.h>
 #include <QDesktopServices>
@@ -53,17 +55,21 @@ QList<PackageState> FwupdResource::addonsInformation()
 
 QString FwupdResource::availableVersion() const
 {
-    return QStringLiteral("3.0");
+    return m_version;
 }
 
 QStringList FwupdResource::categories()
 {
-    return { QStringLiteral("fwupd"), m_name.endsWith(QLatin1Char('3')) ? QStringLiteral("three") : QStringLiteral("notthree") };
+   return m_categories;
+}
+
+void FwupdResource::addCategories(const QString &category){
+    m_categories.append(category);
 }
 
 QString FwupdResource::comment()
 {
-    return QStringLiteral("A reasonably short comment ")+name();
+    return m_summary;
 }
 
 int FwupdResource::size()
@@ -98,7 +104,7 @@ QVariant FwupdResource::icon() const
 
 QString FwupdResource::installedVersion() const
 {
-    return QStringLiteral("2.3");
+    return m_version;
 }
 
 QString FwupdResource::license()
@@ -108,20 +114,17 @@ QString FwupdResource::license()
 
 QString FwupdResource::longDescription()
 {
-    return QStringLiteral("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultricies consequat nulla, ut vulputate nulla ultricies ac. Suspendisse lacinia commodo lacus, non tristique mauris dictum vitae. Sed adipiscing augue nec nisi aliquet viverra. Etiam sit amet nulla in tellus consectetur feugiat. Cras in sem tortor. Fusce a nulla at justo accumsan gravida. Maecenas dui felis, lacinia at ornare sed, aliquam et purus. Sed ut sagittis lacus. Etiam dictum pharetra rhoncus. Suspendisse auctor orci ipsum. Pellentesque vitae urna nec felis consequat lobortis dictum in urna. Phasellus a mi ac leo adipiscing varius eget a felis. Cras magna augue, commodo sed placerat vel, tempus vel ligula. In feugiat quam quis est lobortis sed accumsan nunc malesuada. Mauris quis massa sit amet felis tempus suscipit a quis diam.\n\n"
-
-    "Aenean quis nulla erat, vel sagittis sem. Praesent vitae mauris arcu. Cras porttitor, ante at scelerisque sodales, nibh felis consectetur orci, ut hendrerit urna urna non urna. Duis eu magna id mi scelerisque adipiscing. Aliquam sed quam in eros sodales accumsan. Phasellus tempus sagittis suscipit. Aliquam rutrum dictum justo ut viverra. Nulla felis sem, molestie sed scelerisque non, consequat vitae nulla. Aliquam ullamcorper malesuada mi, vel vestibulum magna vulputate eget. In hac habitasse platea dictumst. Cras sed lacus dui, vel semper sem. Aenean sodales porta leo vel fringilla.\n\n"
-
-    "Ut tempus massa et urna porta non mollis metus ultricies. Duis nec nulla ac metus auctor porta id et mi. Mauris aliquam nibh a ligula malesuada sed tincidunt nibh varius. Sed felis metus, porta et adipiscing non, faucibus id leo. Donec ipsum nibh, hendrerit eget aliquam nec, tempor ut mauris. Suspendisse potenti. Vestibulum scelerisque adipiscing libero tristique eleifend. Donec quis tortor eget elit mollis iaculis ac sit amet nisi. Proin non massa sed nunc rutrum pellentesque. Sed dui lectus, laoreet sed condimentum id, commodo sed urna.\n\n"
-
-    "Praesent tincidunt mattis massa mattis porta. Nullam posuere neque at mauris vestibulum vitae elementum leo sodales. Quisque condimentum lectus in libero luctus egestas. Fusce tempor neque ac dui tincidunt eget viverra quam suscipit. In hac habitasse platea dictumst. Etiam metus mi, adipiscing nec suscipit id, aliquet sed sem. Duis urna ligula, ornare sed vestibulum vel, molestie ac nisi. Morbi varius iaculis ligula. Nunc in augue leo, sit amet aliquam elit. Suspendisse rutrum sem diam. Proin eu orci nisl. Praesent porttitor dignissim est, id fermentum arcu venenatis vitae.\n\n"
-
-    "Integer in sapien eget quam vulputate lobortis. Morbi nibh elit, elementum vitae vehicula sed, consequat nec erat. Donec placerat porttitor est ut dapibus. Fusce augue orci, dictum et convallis vel, blandit eu tortor. Phasellus non eros nulla. In iaculis nulla fermentum nulla gravida eu mattis purus consectetur. Integer dui nunc, sollicitudin ac tincidunt nec, hendrerit bibendum nunc. Proin sit amet augue ac velit egestas varius. Sed eu ante quis orci vestibulum sagittis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus vitae urna odio, at molestie leo. In convallis neque vel mi dictum convallis lobortis turpis sagittis.\n\n");
+    return m_description;
 }
 
 QString FwupdResource::name() const
 {
     return m_name;
+}
+
+QString FwupdResource::vendor() const
+{
+    return m_vendor;
 }
 
 QString FwupdResource::origin() const

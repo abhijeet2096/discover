@@ -1,86 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Menu>
   <Menu>
-    <Name>Fwupd Category</Name>
+    <Name>Fwupd</Name>
     <Icon>applications</Icon>
     <Image>https://c1.staticflickr.com/1/44/155013466_a8596ed65a_o.jpg</Image>
     <Include />
 
     <Menu>
-      <Name>fwupd</Name>
+      <Name>Devices</Name>
       <Icon>kalarm</Icon>
       <Image>https://c2.staticflickr.com/6/5308/5876407905_6f31082232_o.jpg</Image>
-      <Include>
-          <Category>fwupd1</Category>
-      </Include>
     </Menu>
+    
     <Menu>
-      <Name>fwupd addons</Name>
-      <Icon>plasma</Icon>
-      <Image>https://c2.staticflickr.com/4/3221/2897450915_a1fcde62b7_o.jpg</Image>
-      <Addons />
-      <Include>
-          <Category>fwupd2</Category>
-      </Include>
-    </Menu>
-    <Menu>
-      <Name>fwupd 1</Name>
-      <Icon>kontact</Icon>
-      <Image>https://c2.staticflickr.com/2/1347/955467402_be4f5970b2_o.jpg</Image>
-      <Include>
-          <Category>fwupd3</Category>
-      </Include>
-    </Menu>
-    <Menu>
-      <Name>fwupd with stuff</Name>
-      <Icon>kmail</Icon>
-      <Include>
-          <Category>fwupd</Category>
-      </Include>
-
-      <Menu>
-          <Name>fwupd 2.1</Name>
-          <Icon>kalgebra</Icon>
-          <Include>
-              <Category>fwupd</Category>
-          </Include>
-      </Menu>
-    </Menu>
-    <Menu>
-      <Name>fwupd with quite some stuff</Name>
-      <Icon>kmail</Icon>
-      <Include>
-          <Category>fwupd2</Category>
-      </Include>
-
-      <Menu>
-          <Name>fwupd 2.1</Name>
-          <Icon>kalgebra</Icon>
-          <Include>
-              <Category>fwupd</Category>
-          </Include>
-      </Menu>
-    </Menu>
-
-    <Menu>
-      <Name>fwupd 3</Name>
-      <Icon>kig</Icon>
-      <Include>
-          <Category>fwupd</Category>
-          <Or>
-            <Category>three</Category>
-          </Or>
-      </Include>
-    </Menu>
-    <Menu>
-      <Name>fwupd 4</Name>
-      <Icon>kdeconnect</Icon>
-      <Include>
-          <Category>fwupd</Category>
-          <And>
-            <Category>notthree</Category>
-          </And>
-      </Include>
-    </Menu>
+      <Name>Releases</Name>
+      <Icon>kalarm</Icon>
+      <Image>https://c2.staticflickr.com/6/5308/5876407905_6f31082232_o.jpg</Image>
+   </Menu>
+   
   </Menu>
 </Menu>

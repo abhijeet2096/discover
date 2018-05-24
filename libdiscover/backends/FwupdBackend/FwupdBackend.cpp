@@ -66,7 +66,7 @@ FwupdBackend::FwupdBackend(QObject* parent)
     soup_session_remove_feature_by_type (soup_session,
                              SOUP_TYPE_CONTENT_DECODER);
 
-    populate(QStringLiteral("Fwupd"));
+    populate(QStringLiteral("Devices"));
     if (!m_fetching)
         m_reviews->initialize();
 
@@ -82,7 +82,32 @@ FwupdBackend::~FwupdBackend()
 
 void FwupdBackend::populate(const QString& n)
 {
-    const int start = m_resources.count();
+    g_autoptr(GPtrArray) remotes = NULL;
+    g_autoptr(GCancellable) cancellable = g_cancellable_new();
+    g_autoptr(GError) error = NULL;
+    g_autoptr(GPtrArray) devices = NULL;
+
+    /* get devices */
+    devices = fwupd_client_get_devices (client, cancellable, &error);
+    //releases = fwupd_client_get_releases (client,gs_fwupd_app_get_device_id (app),cancellable,&error_local);
+    
+    for (guint i = 0; i < devices->len; i++) {
+        FwupdDevice *device = (FwupdDevice *)g_ptr_array_index (devices, i);
+        const QString name = QLatin1String(fwupd_device_get_name(device));
+        FwupdResource* res = new FwupdResource(name, false, this);
+       // res->setSize(100+(m_startElements-i));
+       // res->setState(AbstractResource::State(1+(i%3)));
+        res->addCategories(n);
+        res->setSummary(QLatin1String(fwupd_device_get_summary(device)));
+        res->setVendor(QLatin1String(fwupd_device_get_vendor(device)));
+        res->setVersion(QLatin1String(fwupd_device_get_version(device)));
+        res->setDescription(QLatin1String(fwupd_device_get_description(device)));
+        m_resources.insert(name.toLower(), res);
+        
+        connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
+    }
+
+   /* const int start = m_resources.count();
     for(int i=start; i<start+m_startElements; i++) {
         const QString name = n+QLatin1Char(' ')+QString::number(i);
         FwupdResource* res = new FwupdResource(name, false, this);
@@ -99,7 +124,7 @@ void FwupdBackend::populate(const QString& n)
         res->setSize(300+(m_startElements-i));
         m_resources.insert(name, res);
         connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
-    }
+    }*/
 }
 
 void FwupdBackend::toggleFetching()
@@ -167,7 +192,7 @@ void FwupdBackend::checkForUpdates()
     if(m_fetching)
         return;
     toggleFetching();
-    populate(QStringLiteral("Moar"));
+    populate(QStringLiteral("Fwupd"));
     QTimer::singleShot(500, this, &FwupdBackend::toggleFetching);
     qDebug() << "FwupdBackend::checkForUpdates";
 }

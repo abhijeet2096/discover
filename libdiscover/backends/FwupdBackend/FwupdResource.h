@@ -48,22 +48,38 @@ public:
     QString comment() override;
     QString name() const override;
     QString packageName() const override;
+    QString vendor() const;
     bool isTechnical() const override { return m_isTechnical; }
     bool canExecute() const override { return true; }
     void invokeApplication() const override;
     void fetchChangelog() override;
     void fetchScreenshots() override;
     QUrl url() const override;
+    
     void setState(State state);
     void setSize(int size) { m_size = size; }
     void setAddons(const AddonList& addons);
-
+    bool setId(const QString &id);
+    void setName(const QString &name){  m_name = name;};
+    void setSummary(const QString &summary){    m_summary = summary;};
+    void setDescription(const QString &description){    m_description = description;};
+    void setVersion(const QString &version){    m_version = version;};
+    void setVendor(const QString &vendor){  m_vendor = vendor;};
+    void addCategories(const QString &category);
+    
     void setAddonInstalled(const QString& addon, bool installed);
     QString sourceIcon() const override { return QStringLiteral("player-time"); }
     QDate releaseDate() const override { return {}; }
 
 public:
+    QString m_id;
     QString m_name;
+    QString m_summary;
+    QString m_description;
+    QString m_version;
+    QString m_vendor;
+    QStringList m_categories;
+        
     AbstractResource::State m_state;
     QList<QUrl> m_screenshots;
     QList<QUrl> m_screenshotThumbnails;
@@ -71,6 +87,9 @@ public:
     QList<PackageState> m_addons;
     bool m_isTechnical;
     int m_size;
+    
+
+    
 };
 
 #endif // FWUPDRESOURCE_H
