@@ -70,10 +70,10 @@ Kirigami.BasicListItem {
                             }
 
                             QQC2.Label {
-                                anchors.verticalCenter: parent.verticalCenter
+                                Layout.alignment: Qt.AlignVCenter
                                 Layout.fillWidth: true
                                 elide: Text.ElideRight
-                                text: listener.isActive ? i18nc("TransactioName - TransactionStatus", "%1 - %2", model.transaction.name, listener.statusText) : model.transaction.name
+                                text: listener.isActive ? i18nc("TransactioName - TransactionStatus", "%1 - %2: %3", model.transaction.name, listener.statusText, model.transaction.downloadSpeedString) : model.transaction.name
                             }
                             ToolButton {
                                 iconName: "dialog-cancel"
