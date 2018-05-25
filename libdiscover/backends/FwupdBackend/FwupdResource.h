@@ -66,6 +66,8 @@ public:
     void setVersion(const QString &version){    m_version = version;};
     void setVendor(const QString &vendor){  m_vendor = vendor;};
     void addCategories(const QString &category);
+    void setHomePage(const QUrl &homepage){  m_homepage = homepage;};
+    void setLicense(const QString &license){ m_license = license;};
     
     void setAddonInstalled(const QString& addon, bool installed);
     QString sourceIcon() const override { return QStringLiteral("player-time"); }
@@ -79,10 +81,12 @@ public:
     QString m_version;
     QString m_vendor;
     QStringList m_categories;
-        
+    QString m_license;
+    
     AbstractResource::State m_state;
     QList<QUrl> m_screenshots;
     QList<QUrl> m_screenshotThumbnails;
+    QUrl m_homepage;
     QString m_iconName;
     QList<PackageState> m_addons;
     bool m_isTechnical;

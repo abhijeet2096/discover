@@ -79,7 +79,7 @@ int FwupdResource::size()
 
 QUrl FwupdResource::homepage()
 {
-    return QUrl(QStringLiteral("http://kde.org"));
+    return m_homepage;
 }
 
 QUrl FwupdResource::helpURL()
@@ -109,7 +109,7 @@ QString FwupdResource::installedVersion() const
 
 QString FwupdResource::license()
 {
-    return QStringLiteral("GPL");
+    return m_license;
 }
 
 QString FwupdResource::longDescription()

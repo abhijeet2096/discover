@@ -84,27 +84,56 @@ void FwupdBackend::populate(const QString& n)
 {
     g_autoptr(GPtrArray) remotes = NULL;
     g_autoptr(GCancellable) cancellable = g_cancellable_new();
+    g_autoptr(GCancellable) cancellable2 = g_cancellable_new();
     g_autoptr(GError) error = NULL;
+    g_autoptr(GError) error2 = NULL;
     g_autoptr(GPtrArray) devices = NULL;
+    g_autoptr(GPtrArray) rels = NULL;
 
     /* get devices */
     devices = fwupd_client_get_devices (client, cancellable, &error);
     //releases = fwupd_client_get_releases (client,gs_fwupd_app_get_device_id (app),cancellable,&error_local);
-    
-    for (guint i = 0; i < devices->len; i++) {
-        FwupdDevice *device = (FwupdDevice *)g_ptr_array_index (devices, i);
-        const QString name = QLatin1String(fwupd_device_get_name(device));
-        FwupdResource* res = new FwupdResource(name, false, this);
-       // res->setSize(100+(m_startElements-i));
-       // res->setState(AbstractResource::State(1+(i%3)));
-        res->addCategories(n);
-        res->setSummary(QLatin1String(fwupd_device_get_summary(device)));
-        res->setVendor(QLatin1String(fwupd_device_get_vendor(device)));
-        res->setVersion(QLatin1String(fwupd_device_get_version(device)));
-        res->setDescription(QLatin1String(fwupd_device_get_description(device)));
-        m_resources.insert(name.toLower(), res);
-        
-        connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
+    if(devices == NULL){
+        if (g_error_matches (error,FWUPD_ERROR,FWUPD_ERROR_NOTHING_TO_DO)){
+                qDebug() << "No Devices Found";
+        }
+    }
+    else{
+        for (guint i = 0; i < devices->len; i++) {
+            FwupdDevice *device = (FwupdDevice *)g_ptr_array_index (devices, i);
+            const QString name = QLatin1String(fwupd_device_get_name(device));
+            FwupdResource* res = new FwupdResource(name, false, this);
+            rels = fwupd_client_get_upgrades (client,fwupd_device_get_id(device),cancellable2, &error2);
+            if (rels == NULL) {
+                if (g_error_matches (error2,FWUPD_ERROR,FWUPD_ERROR_NOTHING_TO_DO)){
+                    qDebug() << "No Packages for "<< fwupd_device_get_id(device);
+                }
+            }
+            else{
+                for (guint j = 0; j < rels->len; j++) {
+                    FwupdRelease *rel = (FwupdRelease *)g_ptr_array_index (rels, j);
+                    const QString name_ = QLatin1String(fwupd_release_get_name(rel));
+                    FwupdResource* res_ = new FwupdResource(name_, false, this);
+                    res_->addCategories(QLatin1String("Releases"));
+                    res_->setSummary(QLatin1String(fwupd_release_get_summary(rel)));
+                    res_->setVendor(QLatin1String(fwupd_release_get_vendor(rel)));
+                    res_->setVersion(QLatin1String(fwupd_release_get_version(rel)));
+                    res_->setDescription(QLatin1String(fwupd_release_get_description(rel)));
+                    res_->setHomePage(QUrl(QLatin1String(fwupd_release_get_homepage(rel))));
+                    res_->setLicense(QLatin1String(fwupd_release_get_license(rel)));
+                    m_resources.insert(name_.toLower(), res_);
+                } 
+            }
+            
+            res->addCategories(n);
+            res->setSummary(QLatin1String(fwupd_device_get_summary(device)));
+            res->setVendor(QLatin1String(fwupd_device_get_vendor(device)));
+            res->setVersion(QLatin1String(fwupd_device_get_version(device)));
+            res->setDescription(QLatin1String(fwupd_device_get_description(device)));
+            m_resources.insert(name.toLower(), res);
+            
+            connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
+        }
     }
 
    /* const int start = m_resources.count();
