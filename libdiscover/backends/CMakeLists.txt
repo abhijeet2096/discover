@@ -37,7 +37,7 @@ set_package_properties(Snapd PROPERTIES
     PURPOSE "Required to build the Snap backend"
     TYPE OPTIONAL)
 
-option(BUILD_SnapBackend "Build Snap support." "ON")
+option(BUILD_SnapBackend "Build Snap support." "OFF")
 if(BUILD_SnapBackend AND Snapd_FOUND)
     add_subdirectory(SnapBackend)
 endif()

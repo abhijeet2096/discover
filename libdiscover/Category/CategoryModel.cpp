@@ -45,7 +45,6 @@ CategoryModel * CategoryModel::global()
 void CategoryModel::populateCategories()
 {
     const auto backends = ResourcesModel::global()->backends();
-
     QVector<Category*> ret;
     CategoriesReader cr;
     Q_FOREACH (const auto backend, backends) {

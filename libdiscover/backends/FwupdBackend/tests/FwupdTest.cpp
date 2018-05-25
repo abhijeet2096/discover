@@ -56,7 +56,7 @@ FwupdTest::FwupdTest(QObject* parent): QObject(parent)
     m_model = new ResourcesModel(QStringLiteral("fwupd-backend"), this);
     m_appBackend = backendByName(m_model, QStringLiteral("FwupdBackend"));
 
-    CategoryModel::global()->populateCategories();
+  //  CategoryModel::global()->populateCategories();
 }
 
 void FwupdTest::initTestCase()

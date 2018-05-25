@@ -53,7 +53,6 @@ FwupdBackend::FwupdBackend(QObject* parent)
     connect(m_reviews, &FwupdReviewsBackend::ratingsReady, this, &AbstractResourcesBackend::emitRatingsReady);
     connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &FwupdBackend::updatesCountChanged);
 
-
     client = fwupd_client_new ();
     to_download = g_ptr_array_new_with_free_func (g_free);
     to_ignore = g_ptr_array_new_with_free_func (g_free);
@@ -65,6 +64,7 @@ FwupdBackend::FwupdBackend(QObject* parent)
                                   NULL);
     soup_session_remove_feature_by_type (soup_session,
                              SOUP_TYPE_CONTENT_DECODER);
+    
 
     populate(QStringLiteral("Devices"));
     if (!m_fetching)
@@ -192,7 +192,7 @@ void FwupdBackend::checkForUpdates()
     if(m_fetching)
         return;
     toggleFetching();
-    populate(QStringLiteral("Fwupd"));
+    populate(QStringLiteral("Devices"));
     QTimer::singleShot(500, this, &FwupdBackend::toggleFetching);
     qDebug() << "FwupdBackend::checkForUpdates";
 }

@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Menu>
+
   <Menu>
-    <Name>Fwupd</Name>
-    <Icon>applications</Icon>
-    <Image>https://c1.staticflickr.com/1/44/155013466_a8596ed65a_o.jpg</Image>
-    <Include />
+    <Name>Firmware Updates</Name>
+    <Icon>applications-internet</Icon>
+    <Image>pkcategories/applicationcrop.jpg</Image>
+    <Include>
+        <And>
+            <Category>Firmware Updates</Category>
+        </And>
+    </Include>
 
     <Menu>
       <Name>Devices</Name>
-      <Icon>kalarm</Icon>
-      <Image>https://c2.staticflickr.com/6/5308/5876407905_6f31082232_o.jpg</Image>
+      <Image>pkcategories/officecrop.jpg</Image>
+      <Icon>applications-office</Icon>
+      <Include>
+        <And>
+          <Category>Devices</Category>
+        </And>
+      </Include>
     </Menu>
-    
+
     <Menu>
       <Name>Releases</Name>
-      <Icon>kalarm</Icon>
-      <Image>https://c2.staticflickr.com/6/5308/5876407905_6f31082232_o.jpg</Image>
-   </Menu>
-   
+      <Image>pkcategories/officecrop.jpg</Image>
+      <Icon>applications-office</Icon>
+      <Include>
+        <And>
+          <Category>Releases</Category>
+        </And>
+      </Include>
+    </Menu>
+    
   </Menu>
+
 </Menu>
