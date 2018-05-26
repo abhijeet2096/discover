@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright © 2013 Aleix Pol Gonzalez <aleixpol@blue-systems.com>       *
+ *   Copyright © 2018 Abhijeet Sharma <sharma.abhijeet2096@gmail.com>      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU General Public License as        *
@@ -84,7 +85,6 @@ void FwupdBackend::populate(const QString& n)
 {
     g_autoptr(GPtrArray) remotes = NULL;
     g_autoptr(GCancellable) cancellable = g_cancellable_new();
-    g_autoptr(GCancellable) cancellable2 = g_cancellable_new();
     g_autoptr(GError) error = NULL;
     g_autoptr(GError) error2 = NULL;
     g_autoptr(GPtrArray) devices = NULL;
@@ -103,10 +103,22 @@ void FwupdBackend::populate(const QString& n)
             FwupdDevice *device = (FwupdDevice *)g_ptr_array_index (devices, i);
             const QString name = QLatin1String(fwupd_device_get_name(device));
             FwupdResource* res = new FwupdResource(name, false, this);
-            rels = fwupd_client_get_upgrades (client,fwupd_device_get_id(device),cancellable2, &error2);
+           
+            res->addCategories(n);
+            res->setSummary(QLatin1String(fwupd_device_get_summary(device)));
+            res->setVendor(QLatin1String(fwupd_device_get_vendor(device)));
+            res->setVersion(QLatin1String(fwupd_device_get_version(device)));
+            res->setDescription(QLatin1String(fwupd_device_get_description(device)));
+            m_resources.insert(name.toLower(), res);
+            
+            connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
+           
+            rels = fwupd_client_get_upgrades (client,fwupd_device_get_id(device),cancellable, &error2);
+             
             if (rels == NULL) {
                 if (g_error_matches (error2,FWUPD_ERROR,FWUPD_ERROR_NOTHING_TO_DO)){
-                    qDebug() << "No Packages for "<< fwupd_device_get_id(device);
+                    qDebug() << "No Packages Found for "<< fwupd_device_get_id(device);
+                    continue;
                 }
             }
             else{
@@ -124,36 +136,8 @@ void FwupdBackend::populate(const QString& n)
                     m_resources.insert(name_.toLower(), res_);
                 } 
             }
-            
-            res->addCategories(n);
-            res->setSummary(QLatin1String(fwupd_device_get_summary(device)));
-            res->setVendor(QLatin1String(fwupd_device_get_vendor(device)));
-            res->setVersion(QLatin1String(fwupd_device_get_version(device)));
-            res->setDescription(QLatin1String(fwupd_device_get_description(device)));
-            m_resources.insert(name.toLower(), res);
-            
-            connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
         }
     }
-
-   /* const int start = m_resources.count();
-    for(int i=start; i<start+m_startElements; i++) {
-        const QString name = n+QLatin1Char(' ')+QString::number(i);
-        FwupdResource* res = new FwupdResource(name, false, this);
-        res->setSize(100+(m_startElements-i));
-        res->setState(AbstractResource::State(1+(i%3)));
-        m_resources.insert(name.toLower(), res);
-        connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
-    }
-
-    for(int i=start; i<start+m_startElements; i++) {
-        const QString name = QStringLiteral("techie")+QString::number(i);
-        FwupdResource* res = new FwupdResource(name, true, this);
-        res->setState(AbstractResource::State(1+(i%3)));
-        res->setSize(300+(m_startElements-i));
-        m_resources.insert(name, res);
-        connect(res, &FwupdResource::stateChanged, this, &FwupdBackend::updatesCountChanged);
-    }*/
 }
 
 void FwupdBackend::toggleFetching()
